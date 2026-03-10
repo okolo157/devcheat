@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { Search, Terminal } from "lucide-react";
+import { Search, Terminal, Sun, Moon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { commands, categoryLabels, type Category } from "@/data/commands";
 import { CommandCard } from "@/components/CommandCard";
@@ -28,6 +28,7 @@ const chipStyles: Record<Category, { active: string; inactive: string }> = {
 const Index = () => {
   const [search, setSearch] = useState("");
   const [activeCategories, setActiveCategories] = useState<Set<Category>>(new Set());
+  const [dark, setDark] = useState(true);
 
   const toggleCategory = (cat: Category) => {
     setActiveCategories((prev) => {
@@ -38,35 +39,47 @@ const Index = () => {
     });
   };
 
+  const toggleTheme = () => {
+    setDark((d) => {
+      const next = !d;
+      document.documentElement.classList.toggle("dark", next);
+      return next;
+    });
+  };
+
   const filtered = useMemo(() => {
     const q = search.toLowerCase();
     return commands.filter((cmd) => {
       const matchesCategory = activeCategories.size === 0 || activeCategories.has(cmd.category);
       const matchesSearch =
-        !q ||
-        cmd.title.toLowerCase().includes(q) ||
-        cmd.command.toLowerCase().includes(q) ||
-        cmd.description?.toLowerCase().includes(q);
+        !q || cmd.title.toLowerCase().includes(q) || cmd.command.toLowerCase().includes(q);
       return matchesCategory && matchesSearch;
     });
   }, [search, activeCategories]);
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
       <header className="border-b border-border">
-        <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6">
-          <div className="flex items-center gap-3 mb-6">
-            <Terminal className="h-7 w-7 text-primary" />
-            <h1 className="text-2xl font-bold tracking-tight text-foreground font-mono">
-              DevCheat
-            </h1>
-            <span className="text-xs text-muted-foreground mt-1">
-              {commands.length} commands
-            </span>
+        <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <Terminal className="h-7 w-7 text-primary" />
+              <h1 className="text-2xl font-bold tracking-tight text-foreground font-mono">
+                DevCheat
+              </h1>
+              <span className="text-xs text-muted-foreground mt-1">
+                {commands.length} commands
+              </span>
+            </div>
+            <button
+              onClick={toggleTheme}
+              className="rounded-md border border-border p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+              aria-label="Toggle theme"
+            >
+              {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            </button>
           </div>
 
-          {/* Search */}
           <div className="relative max-w-lg">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
@@ -77,7 +90,6 @@ const Index = () => {
             />
           </div>
 
-          {/* Category filters */}
           <div className="mt-4 flex flex-wrap gap-2">
             {categories.map((cat) => {
               const isActive = activeCategories.has(cat);
@@ -93,12 +105,19 @@ const Index = () => {
                 </button>
               );
             })}
+            {activeCategories.size > 0 && (
+              <button
+                onClick={() => setActiveCategories(new Set())}
+                className="rounded-full border border-border px-3 py-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
+              >
+                Clear
+              </button>
+            )}
           </div>
         </div>
       </header>
 
-      {/* Commands grid */}
-      <main className="mx-auto max-w-5xl px-4 py-6 sm:px-6">
+      <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6">
         {filtered.length === 0 ? (
           <p className="py-12 text-center text-muted-foreground font-mono text-sm">
             No commands found.
@@ -106,7 +125,7 @@ const Index = () => {
         ) : (
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {filtered.map((cmd, i) => (
-              <CommandCard key={i} {...cmd} />
+              <CommandCard key={`${cmd.category}-${i}`} {...cmd} />
             ))}
           </div>
         )}
