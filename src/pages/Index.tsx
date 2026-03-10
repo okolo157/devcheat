@@ -3,6 +3,7 @@ import { Search, Terminal, Sun, Moon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { commands, categoryLabels, type Category } from "@/data/commands";
 import { CommandCard } from "@/components/CommandCard";
+import logo from "/developer.png"
 
 const categories: Category[] = ["git", "shell", "npm", "docker"];
 
@@ -63,13 +64,21 @@ const Index = () => {
         <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
-              <Terminal className="h-7 w-7 text-primary" />
-              <h1 className="text-2xl font-bold tracking-tight text-foreground font-mono">
-                DevCheat
-              </h1>
-              <span className="text-xs text-muted-foreground mt-1">
-                {commands.length} commands
-              </span>
+              <img
+                src={logo}
+                alt="DevCheat logo"
+                className="h-8 w-8 object-contain"
+              />
+
+              <div className="flex items-baseline gap-2">
+                <h1 className="text-2xl font-bold tracking-tight text-foreground font-mono">
+                  DevCheat
+                </h1>
+
+                <span className="text-xs text-muted-foreground">
+                  {commands.length} commands
+                </span>
+              </div>
             </div>
             <button
               onClick={toggleTheme}
