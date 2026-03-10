@@ -57,6 +57,13 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        cmd: {
+          git: "hsl(var(--cmd-git))",
+          shell: "hsl(var(--cmd-shell))",
+          npm: "hsl(var(--cmd-npm))",
+          docker: "hsl(var(--cmd-docker))",
+          code: "hsl(var(--cmd-code))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
