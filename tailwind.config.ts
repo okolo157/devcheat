@@ -62,6 +62,7 @@ export default {
           shell: "hsl(var(--cmd-shell))",
           npm: "hsl(var(--cmd-npm))",
           docker: "hsl(var(--cmd-docker))",
+          ai: "hsl(var(--cmd-ai))",
           code: "hsl(var(--cmd-code))",
         },
       },

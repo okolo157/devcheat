@@ -1,11 +1,13 @@
 import { useState, useMemo } from "react";
-import { Search, Terminal, Sun, Moon } from "lucide-react";
+import { Search, Sun, Moon, Layers } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { commands, categoryLabels, type Category } from "@/data/commands";
+import { workflows } from "@/data/workflows";
 import { CommandCard } from "@/components/CommandCard";
-import logo from "/developer.png"
+import { WorkflowCard } from "@/components/WorkflowCard";
+import logo from "/developer.png";
 
-const categories: Category[] = ["git", "shell", "npm", "docker"];
+const categories: Category[] = ["git", "shell", "npm", "docker", "ai"];
 
 const chipStyles: Record<Category, { active: string; inactive: string }> = {
   git: {
@@ -24,12 +26,19 @@ const chipStyles: Record<Category, { active: string; inactive: string }> = {
     active: "bg-cmd-docker/20 text-cmd-docker border-cmd-docker/40",
     inactive: "text-muted-foreground border-border hover:border-cmd-docker/30 hover:text-cmd-docker",
   },
+  ai: {
+    active: "bg-cmd-ai/20 text-cmd-ai border-cmd-ai/40",
+    inactive: "text-muted-foreground border-border hover:border-cmd-ai/30 hover:text-cmd-ai",
+  },
 };
+
+type ViewMode = "commands" | "workflows";
 
 const Index = () => {
   const [search, setSearch] = useState("");
   const [activeCategories, setActiveCategories] = useState<Set<Category>>(new Set());
   const [dark, setDark] = useState(true);
+  const [view, setView] = useState<ViewMode>("commands");
 
   const toggleCategory = (cat: Category) => {
     setActiveCategories((prev) => {
@@ -48,12 +57,25 @@ const Index = () => {
     });
   };
 
-  const filtered = useMemo(() => {
+  const filteredCommands = useMemo(() => {
     const q = search.toLowerCase();
     return commands.filter((cmd) => {
       const matchesCategory = activeCategories.size === 0 || activeCategories.has(cmd.category);
       const matchesSearch =
         !q || cmd.title.toLowerCase().includes(q) || cmd.command.toLowerCase().includes(q);
+      return matchesCategory && matchesSearch;
+    });
+  }, [search, activeCategories]);
+
+  const filteredWorkflows = useMemo(() => {
+    const q = search.toLowerCase();
+    return workflows.filter((wf) => {
+      const matchesCategory = activeCategories.size === 0 || activeCategories.has(wf.category);
+      const matchesSearch =
+        !q ||
+        wf.title.toLowerCase().includes(q) ||
+        wf.description.toLowerCase().includes(q) ||
+        wf.steps.some((s) => s.command.toLowerCase().includes(q) || s.label.toLowerCase().includes(q));
       return matchesCategory && matchesSearch;
     });
   }, [search, activeCategories]);
@@ -64,19 +86,13 @@ const Index = () => {
         <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
-              <img
-                src={logo}
-                alt="DevCheat logo"
-                className="h-8 w-8 object-contain"
-              />
-
+              <img src={logo} alt="DevCheat logo" className="h-8 w-8 object-contain" />
               <div className="flex items-baseline gap-2">
                 <h1 className="text-2xl font-bold tracking-tight text-foreground font-mono">
                   DevCheat
                 </h1>
-
                 <span className="text-xs text-muted-foreground">
-                  {commands.length} commands
+                  {commands.length} commands · {workflows.length} workflows
                 </span>
               </div>
             </div>
@@ -92,14 +108,38 @@ const Index = () => {
           <div className="relative max-w-lg">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
-              placeholder="Search commands..."
+              placeholder="Search commands & workflows..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="pl-9 bg-card border-border font-mono text-sm"
             />
           </div>
 
-          <div className="mt-4 flex flex-wrap gap-2">
+          <div className="mt-4 flex flex-wrap items-center gap-2">
+            {/* View toggle */}
+            <div className="flex rounded-md border border-border overflow-hidden mr-2">
+              <button
+                onClick={() => setView("commands")}
+                className={`px-3 py-1 text-xs font-medium transition-colors ${
+                  view === "commands"
+                    ? "bg-muted text-foreground"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                Commands
+              </button>
+              <button
+                onClick={() => setView("workflows")}
+                className={`flex items-center gap-1 px-3 py-1 text-xs font-medium transition-colors ${
+                  view === "workflows"
+                    ? "bg-muted text-foreground"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                <Layers className="h-3 w-3" /> Workflows
+              </button>
+            </div>
+
             {categories.map((cat) => {
               const isActive = activeCategories.has(cat);
               return (
@@ -127,14 +167,26 @@ const Index = () => {
       </header>
 
       <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6">
-        {filtered.length === 0 ? (
+        {view === "commands" ? (
+          filteredCommands.length === 0 ? (
+            <p className="py-12 text-center text-muted-foreground font-mono text-sm">
+              No commands found.
+            </p>
+          ) : (
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {filteredCommands.map((cmd, i) => (
+                <CommandCard key={`${cmd.category}-${i}`} {...cmd} />
+              ))}
+            </div>
+          )
+        ) : filteredWorkflows.length === 0 ? (
           <p className="py-12 text-center text-muted-foreground font-mono text-sm">
-            No commands found.
+            No workflows found.
           </p>
         ) : (
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {filtered.map((cmd, i) => (
-              <CommandCard key={`${cmd.category}-${i}`} {...cmd} />
+          <div className="grid gap-3 sm:grid-cols-2">
+            {filteredWorkflows.map((wf, i) => (
+              <WorkflowCard key={`${wf.category}-${i}`} {...wf} />
             ))}
           </div>
         )}
