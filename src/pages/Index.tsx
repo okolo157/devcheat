@@ -6,6 +6,7 @@ import { workflows } from "@/data/workflows";
 import { CommandCard } from "@/components/CommandCard";
 import { WorkflowCard } from "@/components/WorkflowCard";
 import logo from "/developer.png";
+import logoDark from "/developer-dark.png";
 
 const categories: Category[] = ["git", "shell", "npm", "docker", "ai"];
 
