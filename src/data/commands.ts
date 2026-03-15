@@ -1,4 +1,4 @@
-export type Category = "git" | "shell" | "npm" | "docker";
+export type Category = "git" | "shell" | "npm" | "docker" | "ai";
 
 export interface Command {
   title: string;
@@ -11,6 +11,7 @@ export const categoryLabels: Record<Category, string> = {
   shell: "Terminal",
   npm: "npm/yarn",
   docker: "Docker",
+  ai: "AI",
 };
 
 export const commands: Command[] = [
