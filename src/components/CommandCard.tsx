@@ -9,6 +9,7 @@ const categoryStyles: Record<Category, string> = {
   shell: "bg-cmd-shell/15 text-cmd-shell border-cmd-shell/30",
   npm: "bg-cmd-npm/15 text-cmd-npm border-cmd-npm/30",
   docker: "bg-cmd-docker/15 text-cmd-docker border-cmd-docker/30",
+  ai: "bg-cmd-ai/15 text-cmd-ai border-cmd-ai/30",
 };
 
 export function CommandCard({ title, command, category }: Command) {
