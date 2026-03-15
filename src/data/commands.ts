@@ -268,4 +268,78 @@ export const commands: Command[] = [
   { title: "Login to registry", command: "docker login", category: "docker" },
   { title: "Save image to tar", command: "docker save -o image.tar <image>", category: "docker" },
   { title: "Load image from tar", command: "docker load -i image.tar", category: "docker" },
+
+  // ─── AI / ML ───
+  // Ollama
+  { title: "Install Ollama", command: "curl -fsSL https://ollama.com/install.sh | sh", category: "ai" },
+  { title: "Run a model (Ollama)", command: "ollama run llama3", category: "ai" },
+  { title: "Pull a model", command: "ollama pull mistral", category: "ai" },
+  { title: "List local models", command: "ollama list", category: "ai" },
+  { title: "Remove a model", command: "ollama rm <model>", category: "ai" },
+  { title: "Show model info", command: "ollama show llama3", category: "ai" },
+  { title: "Serve Ollama API", command: "ollama serve", category: "ai" },
+  { title: "Create custom model", command: "ollama create mymodel -f Modelfile", category: "ai" },
+  { title: "Copy a model", command: "ollama cp llama3 my-llama3", category: "ai" },
+  { title: "Ollama API generate", command: "curl http://localhost:11434/api/generate -d '{\"model\":\"llama3\",\"prompt\":\"hello\"}'", category: "ai" },
+  { title: "Ollama API chat", command: "curl http://localhost:11434/api/chat -d '{\"model\":\"llama3\",\"messages\":[{\"role\":\"user\",\"content\":\"hi\"}]}'", category: "ai" },
+
+  // OpenAI CLI
+  { title: "Install OpenAI CLI", command: "pip install openai", category: "ai" },
+  { title: "Set OpenAI API key", command: "export OPENAI_API_KEY='sk-...'", category: "ai" },
+  { title: "Chat completion (curl)", command: "curl https://api.openai.com/v1/chat/completions -H 'Authorization: Bearer $OPENAI_API_KEY' -H 'Content-Type: application/json' -d '{\"model\":\"gpt-4\",\"messages\":[{\"role\":\"user\",\"content\":\"hello\"}]}'", category: "ai" },
+  { title: "List OpenAI models", command: "curl https://api.openai.com/v1/models -H 'Authorization: Bearer $OPENAI_API_KEY'", category: "ai" },
+  { title: "Generate embeddings", command: "curl https://api.openai.com/v1/embeddings -H 'Authorization: Bearer $OPENAI_API_KEY' -d '{\"model\":\"text-embedding-3-small\",\"input\":\"text\"}'", category: "ai" },
+
+  // Hugging Face
+  { title: "Install HF CLI", command: "pip install huggingface_hub", category: "ai" },
+  { title: "Login to HF", command: "huggingface-cli login", category: "ai" },
+  { title: "Download HF model", command: "huggingface-cli download <model-id>", category: "ai" },
+  { title: "Upload to HF", command: "huggingface-cli upload <repo-id> <local-path>", category: "ai" },
+  { title: "HF model info", command: "huggingface-cli repo info <model-id>", category: "ai" },
+  { title: "List HF cache", command: "huggingface-cli scan-cache", category: "ai" },
+  { title: "Delete HF cache", command: "huggingface-cli delete-cache", category: "ai" },
+
+  // Python AI tooling
+  { title: "Install PyTorch", command: "pip install torch torchvision torchaudio", category: "ai" },
+  { title: "Install TensorFlow", command: "pip install tensorflow", category: "ai" },
+  { title: "Install Transformers", command: "pip install transformers", category: "ai" },
+  { title: "Install LangChain", command: "pip install langchain langchain-openai", category: "ai" },
+  { title: "Install llama-cpp-python", command: "pip install llama-cpp-python", category: "ai" },
+  { title: "Install vLLM", command: "pip install vllm", category: "ai" },
+  { title: "Install Gradio", command: "pip install gradio", category: "ai" },
+  { title: "Install Streamlit", command: "pip install streamlit", category: "ai" },
+  { title: "Install LiteLLM", command: "pip install litellm", category: "ai" },
+  { title: "Install Sentence Transformers", command: "pip install sentence-transformers", category: "ai" },
+  { title: "Install FAISS", command: "pip install faiss-cpu", category: "ai" },
+  { title: "Install ChromaDB", command: "pip install chromadb", category: "ai" },
+  { title: "Install Pinecone", command: "pip install pinecone-client", category: "ai" },
+
+  // vLLM / serving
+  { title: "Serve model with vLLM", command: "python -m vllm.entrypoints.openai.api_server --model <model>", category: "ai" },
+  { title: "Run Gradio app", command: "python app.py  # gradio interface", category: "ai" },
+  { title: "Run Streamlit app", command: "streamlit run app.py", category: "ai" },
+  { title: "LiteLLM proxy", command: "litellm --model ollama/llama3 --port 8000", category: "ai" },
+
+  // llama.cpp
+  { title: "Build llama.cpp", command: "cmake -B build && cmake --build build --config Release", category: "ai" },
+  { title: "Run llama.cpp", command: "./build/bin/llama-cli -m model.gguf -p 'Hello' -n 128", category: "ai" },
+  { title: "Quantize model (llama.cpp)", command: "./build/bin/llama-quantize model.gguf model-q4.gguf Q4_K_M", category: "ai" },
+  { title: "llama.cpp server", command: "./build/bin/llama-server -m model.gguf --port 8080", category: "ai" },
+  { title: "Convert HF to GGUF", command: "python convert_hf_to_gguf.py <model-dir>", category: "ai" },
+
+  // Misc AI
+  { title: "Check CUDA version", command: "nvcc --version", category: "ai" },
+  { title: "Check GPU (nvidia)", command: "nvidia-smi", category: "ai" },
+  { title: "Watch GPU usage", command: "watch -n 1 nvidia-smi", category: "ai" },
+  { title: "Python check PyTorch GPU", command: "python -c \"import torch; print(torch.cuda.is_available())\"", category: "ai" },
+  { title: "Create venv for ML", command: "python -m venv .venv && source .venv/bin/activate", category: "ai" },
+  { title: "Freeze requirements", command: "pip freeze > requirements.txt", category: "ai" },
+  { title: "Install from requirements", command: "pip install -r requirements.txt", category: "ai" },
+  { title: "Jupyter notebook", command: "jupyter notebook", category: "ai" },
+  { title: "JupyterLab", command: "jupyter lab", category: "ai" },
+  { title: "Install Jupyter", command: "pip install jupyterlab notebook", category: "ai" },
+  { title: "Weights & Biases login", command: "wandb login", category: "ai" },
+  { title: "Install W&B", command: "pip install wandb", category: "ai" },
+  { title: "MLflow UI", command: "mlflow ui --port 5000", category: "ai" },
+  { title: "Install MLflow", command: "pip install mlflow", category: "ai" },
 ];
