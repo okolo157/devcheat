@@ -1,11 +1,10 @@
 import { useState, useMemo } from "react";
-import { Search, Sun, Moon, Layers } from "lucide-react";
+import { Search, Layers } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { commands, categoryLabels, type Category } from "@/data/commands";
 import { workflows } from "@/data/workflows";
 import { CommandCard } from "@/components/CommandCard";
 import { WorkflowCard } from "@/components/WorkflowCard";
-import logo from "/developer.png";
 import logoDark from "/developer-dark.png";
 
 const categories: Category[] = ["git", "shell", "npm", "docker", "ai"];
