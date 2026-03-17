@@ -49,14 +49,6 @@ const Index = () => {
     });
   };
 
-  const toggleTheme = () => {
-    setDark((d) => {
-      const next = !d;
-      document.documentElement.classList.toggle("dark", next);
-      return next;
-    });
-  };
-
   const filteredCommands = useMemo(() => {
     const q = search.toLowerCase();
     return commands.filter((cmd) => {
