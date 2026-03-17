@@ -37,7 +37,7 @@ type ViewMode = "commands" | "workflows";
 const Index = () => {
   const [search, setSearch] = useState("");
   const [activeCategories, setActiveCategories] = useState<Set<Category>>(new Set());
-  const [dark, setDark] = useState(true);
+  
   const [view, setView] = useState<ViewMode>("commands");
 
   const toggleCategory = (cat: Category) => {
