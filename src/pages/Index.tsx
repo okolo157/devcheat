@@ -5,8 +5,8 @@ import { commands, categoryLabels, type Category } from "@/data/commands";
 import { workflows } from "@/data/workflows";
 import { CommandCard } from "@/components/CommandCard";
 import { WorkflowCard } from "@/components/WorkflowCard";
-import logoDark from "/developer-dark.png";
-import logoLight from "/dev-light.png";
+import logoDark from "/image.png";
+// import logoLight from "/dev-light.png";
 
 const categories: Category[] = ["git", "shell", "npm", "docker", "ai"];
 
@@ -79,7 +79,7 @@ const Index = () => {
         <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
-              <img src={logoLight} alt="DevCheats logo" className="h-8 w-8 object-contain" />
+              <img src={logoDark} alt="DevCheats logo" className="h-8 w-8 object-contain" />
               <div className="flex items-baseline gap-2">
                 <h1 className="text-2xl font-bold tracking-tight text-foreground font-mono">
                   DevCheats
